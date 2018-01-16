@@ -3,6 +3,8 @@ var app         = express();
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var mongoose    = require('mongoose');
+var path 		= require('path');
+var fs 			= require('fs');
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
 
@@ -27,7 +29,8 @@ console.log('Enabled morgan console in dev mode');
 
 // basic route
 app.get('/', function(req, res) {
-    res.send('Hello! The API is at http://localhost:' + port + '/api');
+    //res.send('Hello! The API is at http://localhost:' + port + '/api');
+    res.sendFile('Client.html',{root: path.join(__dirname,'./')});
 });
 
 app.use('/auth',authapi);
@@ -92,6 +95,11 @@ app.use('/api/users',routeapis);
 app.use('/api/addUser',routeapis);
 
 // API ROUTES -------------------
+
+app.get('*', function(req, res) {
+    //res.send('Hello! The API is at http://localhost:' + port + '/api');
+    res.sendFile('404.html',{root: path.join(__dirname,'./')});
+});
 
 // =======================
 // start the server ======

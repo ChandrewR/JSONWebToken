@@ -11,7 +11,7 @@
 <body>
   <h2 style="padding:50px">JSON Web Token</h2>
 
-<div class="container">
+<div class="container" style="background:grey; border-radius:10px;margin-bottom:20px">
   <h3>Authentication</h3>
   <form action="">
     <div class="form-group col-lg-5">
@@ -23,28 +23,28 @@
       <input type="password" class="form-control" id="pwd">
     </div>
     <div class="form-group col-lg-3">
-      <input type="submit" class="btn btn-primary" value="Authenticate">
+      <input type="submit" class="btn btn-default" value="Authenticate">
     </div>
   </form>
 </div>
 
-<div class="container">
+<div class="container" style="background:grey; border-radius:10px;margin-bottom:20px">
   <h3>Add user</h3>
-  <form action="http://localhost:5000/api/addUser">
+  <form action="http://localhost:5000/api/addUser" method="POST">
     <div class="form-group col-lg-5">
       <label for="regusr">Username:</label>
-      <input type="text" class="form-control" id="regusr">
+      <input type="text" class="form-control" name="username" id="regusr">
     </div>
     <div class="form-group col-lg-5">
       <label for="regpwd">Password:</label>
-      <input type="password" class="form-control" id="regpwd">
+      <input type="password" class="form-control" name="password" id="regpwd">
     </div>
-    <div class="form-group col-lg-2">
+    <div class="form-group col-lg-10">
     <label for="admin">Admin</label>
-    <input type="checkbox" value="" id="admin">
+    <input type="checkbox" name="admin" id="adminchkbox">
     </div>
     <div class="form-group col-lg-3">
-      <input type="submit" class="btn btn-primary" value="Add user">
+      <input type="submit" class="btn btn-default" value="Add user">
     </div>
   </form>
 </div>

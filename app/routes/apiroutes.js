@@ -2,11 +2,11 @@ var express = require('express');
 var expapp = express();
 var apiRoutes = express.Router(); 
 var User   = require('../models/user');
-// TODO: route to authenticate a user (POST http://localhost:5000/api/authenticate)
+var bodyParser  = require('body-parser');
+expapp.use(bodyParser.urlencoded({ extended: false }));
+//expapp.use(bodyParser());
+expapp.use(bodyParser.json());
 
-// TODO: route middleware to verify a token
-
-// route to show a random message (GET http://localhost:5000/api/)
 apiRoutes.get('/', function(req, res) {
   res.json({ message: 'api request!' });
 });
@@ -19,10 +19,16 @@ apiRoutes.get('/users', function(req, res) {
 });  
 
 // Add a user
-apiRoutes.get('/addUser', function(req, res) {
+apiRoutes.post('/addUser', function(req, res) {
 
+
+	console.log("admin:"+req.body.admin);
+
+	if(req.body.admin === undefined) {
+		req.body.admin = 'off';
+	}
   // create a sample user
-  var user = new User({ 
+/*  var user = new User({ 
     name: 'Test', 
     password: 'password',
     admin: true 
@@ -34,7 +40,9 @@ apiRoutes.get('/addUser', function(req, res) {
 
     console.log('User saved successfully');
     res.json({ success: true,name : user.name });
-  });
+  });*/
+
+  res.json({success : true, name:req.body.username,admin:req.body.admin});
 }); 
 
 // apply the routes to our application with the prefix /api
