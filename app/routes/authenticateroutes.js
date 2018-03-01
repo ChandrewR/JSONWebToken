@@ -19,25 +19,27 @@ authenticateRoutes.get('/', function(req, res) {
 
 authenticateRoutes.post('/authenticate', function(req, res) {
 
+
+  var token = '';
   // find the user
   User.findOne({
-    name: req.body.name
+    name: req.body.email
   }, function(err, user) {
 
-    if (err) throw err;
+    if (err) res.json({ success: false, message: err , token : ''});
 
     if (!user) {
-      res.json({ success: false, message: 'Authentication failed. User not found.' });
+      res.json({ success: false, message: 'Authentication failed. User not found.', token : ''});
     } else if (user) {
       if (user.password != req.body.password) {
-        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+        res.json({ success: false, message: 'Authentication failed. Wrong password.', token : '' });
       } else {
 
     const payload = {
-      admin: user.admin 
+      admin: user.admin
     };
     
-    var token = jwt.sign(payload, 'Secret-Default',{ expiresIn: '1h'});
+    token = jwt.sign(payload, 'Secret-Default',{ expiresIn: '1h'});
     //var older_token = jwt.sign({ payload, iat: Math.floor(Date.now() / 1000) - 30 }, 'Secret-Default');
 
     res.json({

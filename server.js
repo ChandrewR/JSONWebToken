@@ -4,14 +4,15 @@ var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var mongoose    = require('mongoose');
 var path 		= require('path');
-var fs 			= require('fs');
+//var fs 			= require('fs');
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
-
+var routeapis   = require('./app/routes/apiroutes'); // import apiroute module
+var routesecuredapis   = require('./app/routes/securedapiroutes'); // import apiroute module
 var authapi   = require('./app/routes/authenticateroutes'); // import authenticate module
 var config = require('./config'); // get our config file
 //var User   = require('./app/models/user'); // get our mongoose model
-var routeapis   = require('./app/routes/apiroutes'); // import apiroute module
+
 
 
 var port = process.env.PORT || 5000; 
@@ -33,9 +34,13 @@ app.get('/', function(req, res) {
     res.sendFile('Client.html',{root: path.join(__dirname,'./')});
 });
 
+app.use('/api',routeapis);
+app.use('/api/addUser',routeapis);
+app.use('/api/users',routeapis);
 app.use('/auth',authapi);
 app.use('/auth/test',authapi);
 app.use('/auth/authenticate',authapi);
+
 
 
 // API ROUTES -------------------
@@ -59,7 +64,7 @@ app.get('/addUser', function(req, res) {
 });*/
 
 // route middleware to verify a token
-/*app.use(function(req, res, next) {
+app.use(function(req, res, next) {
 
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -88,11 +93,11 @@ app.get('/addUser', function(req, res) {
     });
 
   }
-});*/
+});
 
-app.use('/api',routeapis);
-app.use('/api/users',routeapis);
-app.use('/api/addUser',routeapis);
+//app.use('/api',routeapis);
+app.use('/securedapi',routesecuredapis);
+app.use('/securedapi/securedusers',routesecuredapis);
 
 // API ROUTES -------------------
 
@@ -101,8 +106,5 @@ app.get('*', function(req, res) {
     res.sendFile('404.html',{root: path.join(__dirname,'./')});
 });
 
-// =======================
-// start the server ======
-// =======================
 app.listen(port);
 console.log('Listening to http://localhost:' + port);

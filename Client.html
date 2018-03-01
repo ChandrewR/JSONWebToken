@@ -10,8 +10,7 @@
 </head>
 <body>
   <h2 style="padding:50px">JSON Web Token</h2>
-
-<div class="container" style="background:grey; border-radius:10px;margin-bottom:20px">
+<div class="container" style="background:#DCDCDC; border-radius:10px;margin-bottom:20px">
   <h3>Authentication</h3>
   <form action="">
     <div class="form-group col-lg-5">
@@ -27,8 +26,7 @@
     </div>
   </form>
 </div>
-
-<div class="container" style="background:grey; border-radius:10px;margin-bottom:20px">
+<div class="container" style="background:#DCDCDC; border-radius:10px;margin-bottom:20px">
   <h3>Add user</h3>
   <form action="http://localhost:5000/api/addUser" method="POST">
     <div class="form-group col-lg-5">
@@ -44,10 +42,37 @@
     <input type="checkbox" name="admin" id="adminchkbox">
     </div>
     <div class="form-group col-lg-3">
-      <input type="submit" class="btn btn-default" value="Add user">
+      <input type="submit" class="btn btn-primary" value="Add user">
     </div>
   </form>
 </div>
 
+<div class="container">
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped" id="usertable">
+      <tr>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Admin</th>
+      </tr>
+    </table>
+  </div>
+</div>
+<script>
+
+$(document).ready(function() {
+  $.getJSON('http://localhost:5000/api/users', function(data) {
+    var userdata = '';
+    $.each(data, function(key,value){
+      userdata += '<tr>';
+      userdata += '<td>'+value.name+'</td>';
+      userdata += '<td>'+value.password;
+      userdata += '<td>'+value.admin;
+      userdata += '<tr>';
+    });
+    $('#usertable').append(userdata);
+  });
+});
+</script>
 </body>
 </html>
