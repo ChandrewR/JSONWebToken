@@ -2,6 +2,7 @@ var express = require('express');
 var expapp = express();
 var apiRoutes = express.Router(); 
 var User   = require('../models/user');
+var SecuredUser   = require('../models/securedusers');
 var bodyParser  = require('body-parser');
 expapp.use(bodyParser.urlencoded({ extended: false }));
 //expapp.use(bodyParser());
@@ -12,7 +13,7 @@ apiRoutes.get('/', function(req, res) {
 });
 
 apiRoutes.get('/securedusers', function(req, res) {
-  User.find({}, function(err, users) {
+  SecuredUser.find({}, function(err, users) {
     res.json(users);
   });
 });  

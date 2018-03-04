@@ -16,9 +16,7 @@ authenticateRoutes.get('/', function(req, res) {
   res.json({ message: 'Authenticate api request!' });
 });
 
-
 authenticateRoutes.post('/authenticate', function(req, res) {
-
 
   var token = '';
   // find the user

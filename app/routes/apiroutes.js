@@ -2,6 +2,7 @@ var express = require('express');
 var expapp = express();
 var apiRoutes = express.Router(); 
 var User   = require('../models/user');
+var SecuredUser   = require('../models/securedusers');
 var bodyParser  = require('body-parser');
 expapp.use(bodyParser.urlencoded({ extended: false }));
 //expapp.use(bodyParser());
@@ -12,23 +13,19 @@ apiRoutes.get('/users', function(req, res) {
   User.find({}, function(err, users) {
     res.json(users);
   });
-});  
-
-apiRoutes.get('/securedusers', function(req, res) {
-  User.find({}, function(err, users) {
-    res.json(users);
-  });
-});  
+});
 
 // Add a user
 apiRoutes.post('/addUser', function(req, res) {
 
-	if(req.body.admin === undefined) {
+	/* if(req.body.admin === undefined) {
 		req.body.admin = false;
 	} else
 	{
 		req.body.admin = true;
-	}
+  } */
+  
+
   // create a sample user
   var user = new User({ 
     name: req.body.username, 
@@ -36,12 +33,26 @@ apiRoutes.post('/addUser', function(req, res) {
     admin: req.body.admin
   });
 
-  // save the sample user
-  user.save(function(err) {
-    if (err) throw err;
-    console.log('User saved successfully');
-    res.json({ success: true,name : user.name });
+  var secureduser = new SecuredUser({ 
+    name: req.body.username, 
+    password: req.body.password,
+    admin: req.body.admin
   });
+
+  if (req.body.admin == true) {
+    secureduser.save(function(err) {
+      if (err) throw err;
+      console.log('User saved successfully');
+      res.json({ success: true,name : user.name });
+    });
+  } else {
+    user.save(function(err) {
+      if (err) throw err;
+      console.log('User saved successfully');
+      res.json({ success: true,name : user.name });
+    });
+
+  }
 
   //res.json({success : true, name:req.body.username,admin:req.body.admin});
 }); 
